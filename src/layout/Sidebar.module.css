@@ -1,0 +1,11 @@
+div.sidebar {
+    flex: 20rem 0 0;
+    background-color: #FFFFFF;
+}
+
+div.sidebarPanel {
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+}
