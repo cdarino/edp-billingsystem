@@ -3,21 +3,24 @@ import './index.css'
 import Content from './layout/Content'
 import Sidebar from './layout/Sidebar'
 import ClientsPage from './clientsPage/ClientsPage';
+import DashboardPage from './dashboardPage/DashboardPage';
+import { loadData, saveToStorage } from './data';
 
 export default function App() {
-    const dataState = useState({});
+    const dataState = useState(loadData());
     const [data, setData] = dataState;
-
-    useEffect(() => {
-        const jsonData = localStorage.getItem("data")
-        setData(JSON.parse(jsonData));
-    }, []);
 
     return (
         <div style={{display: "flex", alignItems: "stretch", height: "100vh", width: "100vw", maxHeight: "100vh"}}>
             <Sidebar/>
             <Content>
-                <ClientsPage></ClientsPage>
+                {/* 
+                    Inside <Content></Content> a single page should only be displayed.
+                    Page switching isn't implemented yet so for the meantime, manually comment pages.
+                */}
+
+                {/* <ClientsPage></ClientsPage> */}
+                <DashboardPage state={dataState}></DashboardPage>
             </Content>
         </div>
     )

@@ -5,7 +5,7 @@ export default function Sidebar() {
         <>
             <div className={styles["sidebar"]}>
                 <div className={styles["sidebarPanel"]}>
-                    <span style={{"font-size": "24px", "color": "var(--accent)", "font-weight": "bold"}}>Billing like a pro</span>
+                    <span style={{"font-size": "24px", "color": "var(--accent)", "font-weight": "bold"}}> App Name Here </span>
                     <SidebarTab Icon={TemporaryIconPlaceholder}> Tab 1 </SidebarTab>
                 </div>
             </div>
