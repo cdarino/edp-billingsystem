@@ -2,7 +2,9 @@ import Card from "../components/Card";
 import ContentHeader from "../components/ContentHeader";
 import ContentMain from "../components/ContentMain";
 
-export default function ClientsPage({dataState}) {
+export default function ClientsPage({state}) {
+    const [data, setData] = state;
+
     return (
         <>
         <ContentHeader>
