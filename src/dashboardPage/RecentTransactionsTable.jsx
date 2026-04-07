@@ -1,13 +1,17 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
 import styles from "./RecentTransactionsTable.module.css";
+import { AppContext } from "../App";
 
-export function RecentTransactionsTable({state}) {
-    const [data, setData] = state;
+export function RecentTransactionsTable() {
+
+    const {dataState, CurrentPage} = useContext(AppContext);
+
+    const [data, setData] = dataState;
 
     // Goes through each payment in each ledger account. Then sorts by date/time in descending order.
     const getRecentPayments = useCallback(() => {
         const unsortedPayments = [];
-
+        
         for (const [clientId, client] of Object.entries(data)) {
             for (const [propertyLotId, propertyLot] of Object.entries(client.propertyLots)) {
                 for (const [paymentId, payment] of Object.entries(propertyLot.account.payments)) {

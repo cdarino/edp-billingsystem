@@ -1,10 +1,15 @@
+import { useContext } from "react";
+import { AppContext } from "../App";
 import Card from "../components/Card";
 import ContentHeader from "../components/ContentHeader";
 import ContentMain from "../components/ContentMain";
 import {RecentTransactionsTable} from "./RecentTransactionsTable";
 
-export default function DashboardPage({state}) {
-    const [data, setData] = state;
+export default function DashboardPage() {
+    const {dataState, CurrentPage} = useContext(AppContext)
+
+    // alert("please work " + dataState);
+    // alert("please " + CurrentPage);
 
     return (
         <>
@@ -20,7 +25,7 @@ export default function DashboardPage({state}) {
                 <Card style={{gridRow: "1/3", gridColumn: "2"}}>
                     <h3>Recent payments</h3>
 
-                    <RecentTransactionsTable state={state}/>
+                    <RecentTransactionsTable/>
                 </Card>
             </div>
         </ContentMain>

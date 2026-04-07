@@ -19,15 +19,19 @@ export default function Sidebar() {
 
 function TemporaryIconPlaceholder() {
     return (
-        <>
+        <div style={{display: "inline", minHeight: "48px", minWidth: "48px", backgroundColor: "green"}}>
             icon
-        </>
+        </div>
     )
 }
 
-function SidebarTab({Icon, children}) {
+function SidebarTab({Page, Icon, children}) {
+    const onClick = () => {
+        
+    }
+
     return (
-        <div>
+        <div className={styles["sidebarTab"]}>
             <Icon/>
             {children}
         </div>
