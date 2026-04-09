@@ -4,32 +4,27 @@ import { AppContext } from "../App";
 
 export function RecentTransactionsTable() {
 
-    const {dataState, CurrentPage} = useContext(AppContext);
+    const { data } = useContext(AppContext);
 
-    const [data, setData] = dataState;
-
-    // Goes through each payment in each ledger account. Then sorts by date/time in descending order.
     const getRecentPayments = useCallback(() => {
-        const unsortedPayments = [];
-        
-        for (const [clientId, client] of Object.entries(data)) {
-            for (const [propertyLotId, propertyLot] of Object.entries(client.propertyLots)) {
-                for (const [paymentId, payment] of Object.entries(propertyLot.account.payments)) {
-                    unsortedPayments.push({
-                        paymentId: paymentId,
+        const unsorted = data.getAllClients().flatMap(client => {
+            return client.getProperties().flatMap(property => {
+                return property.getPayments().flatMap(payment => {
+                    return {
+                        paymentId: payment.id,
                         clientName: client.fullName,
                         date: payment.paymentDate,
-                        propertyName: "placeholder",
+                        propertyName: property.getDisplayName(),
                         amount: payment.amount
-                    });
-                }
-            }
-        }
+                    }
+                })
+            });
+        });
         
-        return unsortedPayments.sort((p1, p2) => p1.date < p2.date);
+        return unsorted.sort((p1, p2) => p1.date < p2.date);
     });
 
-    const recentPayments = getRecentPayments()
+    const recentPayments = getRecentPayments();
 
     return (
         <table className={styles["recentTransactionsTable"]}>
