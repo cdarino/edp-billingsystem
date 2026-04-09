@@ -1,8 +1,8 @@
 import { useCallback, useContext } from "react";
-import styles from "./RecentTransactionsTable.module.css";
+import styles from "./RecentTransactionsList.module.css";
 import { AppContext } from "../App";
 
-export function RecentTransactionsTable() {
+export function RecentTransactionsList() {
 
     // useContext(AppContext) is a way to store variables globally
     // Get `data` from it
