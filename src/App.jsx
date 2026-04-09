@@ -16,28 +16,7 @@ export const AppContext = createContext({
 export default function App() {
     const [data, setData] = useState(loadData());
 
-    // currentPage is an object: { name: string, params: object }
-    const [currentPage, setCurrentPage] = useState({ name: 'dashboard', params: {} });
-
-    // Persist data to storage whenever it changes
-    useEffect(() => {
-        saveToStorage(data);
-    }, [data]);
-
-    const pageToRender = () => {
-        switch (currentPage.name) {
-            case 'dashboard':
-                return <DashboardPage />;
-            case 'clients':
-                return <ClientsPage state={dataState} />;
-            case 'payments':
-                return <RecordsPage />;
-            case 'paymentDetail':
-                return <PaymentDetail paymentId={currentPage.params.paymentId} />;
-            default:
-                return <DashboardPage />;
-        }
-    };
+    const [CurrentPage, setCurrentPage] = useState(DashboardPage);
 
     return (
             <AppContext.Provider value={{dataState, currentPage, setCurrentPage}}>
