@@ -1,15 +1,5 @@
 // Manages saving, loading, creation of data for localStorage
 
-// What to view:
-// Access root data: list all payments, every property of every client; list all properties, every client.
-// Access client: get details; list all properties; list all payments, every property.
-// Access property: get details; list all payments.
-
-// What to edit:
-// 
-
-// Doubly linked? That means both should be updated.
-
 /**
  * @typedef {Object} RootData
  * @property {Record<number, ClientData>} clients

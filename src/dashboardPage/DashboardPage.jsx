@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { AppContext } from "../App";
 import Card from "../components/Card";
 import ContentHeader from "../components/ContentHeader";
 import ContentMain from "../components/ContentMain";
