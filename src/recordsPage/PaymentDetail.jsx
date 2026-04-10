@@ -2,27 +2,25 @@ import React, { useContext } from "react";
 import { AppContext } from "../App";
 
 export default function PaymentDetail({ paymentId: propPaymentId }) {
-  const { dataState, currentPage, setCurrentPage } = useContext(AppContext);
-  const [data] = dataState;
+  const { data, currentPage, setCurrentPage } = useContext(AppContext);
 
   // Determine paymentId: either from props or from currentPage params
   const paymentId = propPaymentId ?? currentPage?.params?.paymentId;
 
   // Flatten payments to search
   let found = null;
-  for (const [clientId, client] of Object.entries(data || {})) {
-    for (const [lotId, lot] of Object.entries(client.propertyLots || {})) {
-      const payments = lot.account?.payments || {};
-      for (const [pid, payment] of Object.entries(payments)) {
-        if (String(pid) === String(paymentId)) {
+  for (const client of Object.values(data.clients || {})) {
+    for (const property of client.propertyIds.map(id => data.properties[id])) {
+      for (const payment of property.account.paymentIds.map(id => data.payments[id])) {
+        if (String(payment.id) === String(paymentId)) {
           found = {
-            id: pid,
+            id: payment.id,
             clientName: client.fullName,
             date: payment.paymentDate,
-            propertyName: lot.location || `Lot ${lotId}`,
+            propertyName: property.location || `Lot ${property.id}`,
             amount: payment.amount,
-            clientId,
-            lotId,
+            clientId: client.id,
+            lotId: property.id,
             raw: payment,
           };
           break;

@@ -43,7 +43,7 @@ export default function App() {
     };
 
     return (
-            <AppContext.Provider value={{data, setCurrentPage}}>
+            <AppContext.Provider value={{data, currentPage, setCurrentPage}}>
                 <div style={{display: "flex", alignItems: "stretch", height: "100vh", width: "100vw", maxHeight: "100vh"}}>
                         <Sidebar/>
                         <Content>

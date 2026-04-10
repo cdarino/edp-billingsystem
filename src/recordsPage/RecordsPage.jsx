@@ -17,7 +17,7 @@ export default function RecordsPage() {
             return client.propertyIds.map(i => data.properties[i]).flatMap(property => {
                 return property.account.paymentIds.map(i => data.payments[i]).flatMap(payment => {
                     return {
-                        paymentId: payment.id,
+                        id: payment.id,
                         clientName: client.fullName,
                         date: payment.paymentDate,
                         propertyName: getPropertyName(property),
