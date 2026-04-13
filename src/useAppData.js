@@ -38,6 +38,21 @@ function getLastPaymentClientId(paymentIds, payments) {
     return clientIds.length > 0 ? clientIds[clientIds.length - 1] : null;
 }
 
+function getNextAvailableId(records) {
+    const usedIds = new Set(
+        Object.keys(records || {})
+            .map(Number)
+            .filter(id => !Number.isNaN(id) && id > 0)
+    );
+
+    let candidate = 1;
+    while (usedIds.has(candidate)) {
+        candidate += 1;
+    }
+
+    return candidate;
+}
+
 /**
  * @param {import('./data').RootData} data
  */
@@ -176,9 +191,9 @@ export function useAppData(data) {
      * @type {(arg0: import('./data').ClientData) => number}
      */
     const createClient = useCallback((clientData) => {
-        const newId = lastClientId + 1;
+        const newId = getNextAvailableId(clients);
 
-        setLastClientId(newId);
+        setLastClientId(prev => Math.max(prev, newId));
         setClients(prevClients => ({
             ...prevClients,
             [newId]: {
@@ -190,18 +205,18 @@ export function useAppData(data) {
         }));
 
         return newId;
-    }, [lastClientId]);
+    }, [clients]);
 
     /**
      * @type {(arg0: import('./data').PropertyData) => number}
      */
     const createProperty = useCallback((propertyData) => {
-        const newId = lastPropertyId + 1;
+        const newId = getNextAvailableId(properties);
         const providedTotal = Number(propertyData.account?.totalPrice ?? propertyData.total);
         const calculatedTotal = Number(propertyData.areaInSqm || 0) * Number(propertyData.pricePerSqm || 0);
         const totalPrice = !Number.isNaN(providedTotal) && providedTotal > 0 ? providedTotal : calculatedTotal;
 
-        setLastPropertyId(newId);
+        setLastPropertyId(prev => Math.max(prev, newId));
         setProperties(prevProperties => ({
             ...prevProperties,
             [newId]: {
@@ -222,7 +237,7 @@ export function useAppData(data) {
         }));
 
         return newId;
-    }, [lastPropertyId]);
+    }, [properties]);
 
     /**
      * @type {(arg0: { propertyId: number, clientId: number, amount: number, paymentDate: number, paymentType: 'partial' | 'full' }) => {ok: boolean, error?: string, paymentId?: number, amount?: number}}
@@ -281,12 +296,12 @@ export function useAppData(data) {
             return { ok: false, error: 'Invalid payment date.' };
         }
 
-        const newPaymentId = lastPaymentId + 1;
+        const newPaymentId = getNextAvailableId(payments);
         const nextTotalPaid = totalPaid + amountToPay;
         const isFullyPaid = nextTotalPaid >= totalPrice;
         const nextStatus = isFullyPaid ? 'sold' : 'in-payment';
 
-        setLastPaymentId(newPaymentId);
+        setLastPaymentId(prev => Math.max(prev, newPaymentId));
         setPayments(prevPayments => ({
             ...prevPayments,
             [newPaymentId]: {
@@ -340,7 +355,7 @@ export function useAppData(data) {
             paymentId: newPaymentId,
             amount: amountToPay
         };
-    }, [clients, properties, payments, lastPaymentId]);
+    }, [clients, properties, payments]);
 
     /**
      * @type {(arg0: import('./data').ClientData) => void}
