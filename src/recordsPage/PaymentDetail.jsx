@@ -1,6 +1,16 @@
+<<<<<<< HEAD
 import React, { useContext } from "react";
 import { AppContext } from "../App";
 
+=======
+import { useContext } from "react";
+import { AppContext } from "../App";
+
+function getPropertyName(property) {
+  return `${property.area} - Blk. ${property.blockNumber} Lot ${property.lotNumber}`;
+}
+
+>>>>>>> bb0dfa2 (Added create and edit forms)
 export default function PaymentDetail({ paymentId: propPaymentId }) {
   const { data, currentPage, setCurrentPage } = useContext(AppContext);
 
@@ -9,6 +19,7 @@ export default function PaymentDetail({ paymentId: propPaymentId }) {
 
   // Flatten payments to search
   let found = null;
+<<<<<<< HEAD
   for (const client of Object.values(data.clients || {})) {
     for (const property of client.propertyIds.map(id => data.properties[id])) {
       for (const payment of property.account.paymentIds.map(id => data.payments[id])) {
@@ -29,6 +40,33 @@ export default function PaymentDetail({ paymentId: propPaymentId }) {
       if (found) break;
     }
     if (found) break;
+=======
+  for (const property of Object.values(data.properties || {})) {
+    const owner = Object.values(data.clients || {}).find(client => client.propertyIds.includes(property.id));
+    const uniquePaymentIds = Array.from(new Set(property.account?.paymentIds || []));
+
+    for (const payment of uniquePaymentIds.map(id => data.payments[id]).filter(Boolean)) {
+      if (String(payment.id) === String(paymentId)) {
+        const paymentClient = data.clients[payment.clientId] || owner;
+
+        found = {
+          id: payment.id,
+          clientName: paymentClient ? paymentClient.fullName : "Unassigned",
+          date: payment.paymentDate,
+          propertyName: getPropertyName(property),
+          amount: payment.amount,
+          clientId: paymentClient ? paymentClient.id : null,
+          lotId: property.id,
+          raw: payment,
+        };
+        break;
+      }
+    }
+
+    if (found) {
+      break;
+    }
+>>>>>>> bb0dfa2 (Added create and edit forms)
   }
 
   // If not found in real data, check for demo payments
