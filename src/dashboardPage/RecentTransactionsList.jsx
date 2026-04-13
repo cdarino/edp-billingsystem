@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { useCallback, useContext } from "react";
-=======
 import { useContext } from "react";
->>>>>>> bb0dfa2 (Added create and edit forms)
 import styles from "./RecentTransactionsList.module.css";
 import { AppContext } from "../App";
 
@@ -17,23 +13,6 @@ export function RecentTransactionsList() {
     const getPropertyName = (property) => `${property.area} - Blk. ${property.blockNumber} Lot ${property.lotNumber}`;
 
     const getRecentPayments = () => {
-<<<<<<< HEAD
-            const out = Object.values(data.clients).flatMap(client => {
-                return client.propertyIds.map(i => data.properties[i]).flatMap(property => {
-                    return property.account.paymentIds.map(i => data.payments[i]).flatMap(payment => {
-                        return {
-                            paymentId: payment.id,
-                            clientName: client.fullName,
-                            date: payment.paymentDate,
-                            propertyName: getPropertyName(property),
-                            amount: payment.amount,
-                            clientId: client.id,
-                            propertyLotId: property.id
-                        }
-                    })
-                });
-            })
-=======
             const out = Object.values(data.properties).flatMap(property => {
                 const owner = Object.values(data.clients).find(client => client.propertyIds.includes(property.id));
                 const uniquePaymentIds = Array.from(new Set(property.account?.paymentIds || []));
@@ -55,7 +34,6 @@ export function RecentTransactionsList() {
                         }
                     });
             });
->>>>>>> bb0dfa2 (Added create and edit forms)
 
             out.sort((a, b) => b.date - a.date);
     
@@ -78,11 +56,7 @@ export function RecentTransactionsList() {
             <tbody>
                 {
                     recentPayments.map(pym => (
-<<<<<<< HEAD
-                        <tr>
-=======
                         <tr key={String(pym.paymentId)}>
->>>>>>> bb0dfa2 (Added create and edit forms)
                             <td>{pym.paymentId}</td>
                             <td>{pym.clientName}</td>
                             <td>{new Date(pym.date).toLocaleString()}</td>

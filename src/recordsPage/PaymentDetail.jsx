@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import React, { useContext } from "react";
-import { AppContext } from "../App";
-
-=======
 import { useContext } from "react";
 import { AppContext } from "../App";
 
@@ -10,7 +5,6 @@ function getPropertyName(property) {
   return `${property.area} - Blk. ${property.blockNumber} Lot ${property.lotNumber}`;
 }
 
->>>>>>> bb0dfa2 (Added create and edit forms)
 export default function PaymentDetail({ paymentId: propPaymentId }) {
   const { data, currentPage, setCurrentPage } = useContext(AppContext);
 
@@ -19,28 +13,6 @@ export default function PaymentDetail({ paymentId: propPaymentId }) {
 
   // Flatten payments to search
   let found = null;
-<<<<<<< HEAD
-  for (const client of Object.values(data.clients || {})) {
-    for (const property of client.propertyIds.map(id => data.properties[id])) {
-      for (const payment of property.account.paymentIds.map(id => data.payments[id])) {
-        if (String(payment.id) === String(paymentId)) {
-          found = {
-            id: payment.id,
-            clientName: client.fullName,
-            date: payment.paymentDate,
-            propertyName: property.location || `Lot ${property.id}`,
-            amount: payment.amount,
-            clientId: client.id,
-            lotId: property.id,
-            raw: payment,
-          };
-          break;
-        }
-      }
-      if (found) break;
-    }
-    if (found) break;
-=======
   for (const property of Object.values(data.properties || {})) {
     const owner = Object.values(data.clients || {}).find(client => client.propertyIds.includes(property.id));
     const uniquePaymentIds = Array.from(new Set(property.account?.paymentIds || []));
@@ -66,7 +38,6 @@ export default function PaymentDetail({ paymentId: propPaymentId }) {
     if (found) {
       break;
     }
->>>>>>> bb0dfa2 (Added create and edit forms)
   }
 
   // If not found in real data, check for demo payments
