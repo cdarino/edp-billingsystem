@@ -8,6 +8,7 @@ export default function ViewClientForm({ clientId: propClientId }) {
     const { data, currentPage, setCurrentPage } = useContext(AppContext);
 
     const clientId = Number(propClientId ?? currentPage?.params?.clientId);
+    const propertyId = currentPage?.params?.propertyId;
     const client = data.clients[clientId];
 
     if (!client) {
@@ -100,8 +101,8 @@ export default function ViewClientForm({ clientId: propClientId }) {
                     )}
 
                     <div style={{ display: "flex", gap: "0.6rem", marginTop: "1.5rem" }}>
-                        <button onClick={() => setCurrentPage({ name: "clients", params: {} })} style={{ padding: "0.55rem 0.9rem", fontWeight: "bold" }}>
-                            Back to Clients
+                        <button onClick={() => propertyId ? setCurrentPage({ name: "viewProperty", params: { propertyId } }) : setCurrentPage({ name: "clients", params: {} })} style={{ padding: "0.55rem 0.9rem", fontWeight: "bold" }}>
+                            {propertyId ? "Back to Property Details" : "Back to Clients"}
                         </button>
                     </div>
                 </Card>

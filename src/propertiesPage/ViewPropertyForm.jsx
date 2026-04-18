@@ -34,7 +34,10 @@ export default function ViewPropertyForm({ propertyId: propPropertyId }) {
     const uniquePaymentIds = Array.from(new Set(property.account?.paymentIds || []));
     const totalPaid = uniquePaymentIds.reduce((sum, id) => sum + (data.payments[id]?.amount || 0), 0);
     const remainingBalance = totalPrice - totalPaid;
-    const owner = Object.values(data.clients).find(client => client.propertyIds?.includes(propertyId));
+    
+    const ownerEntry = Object.entries(data.clients).find(([_, client]) => client.propertyIds?.includes(propertyId));
+    const owner = ownerEntry ? ownerEntry[1] : null;
+    const ownerId = ownerEntry ? Number(ownerEntry[0]) : null;
 
     return (
         <>
@@ -92,7 +95,12 @@ export default function ViewPropertyForm({ propertyId: propPropertyId }) {
 
                         <div style={{ display: "grid", gap: "0.35rem" }}>
                             <span style={{ fontWeight: "bold" }}>Owner</span>
-                            <span>{owner ? owner.fullName : 'Unassigned'}</span>
+                            <button 
+                                onClick={() => ownerId && setCurrentPage({ name: "viewClient", params: { clientId: ownerId, propertyId } })}
+                                style={{ background: "none", border: "none", cursor: "pointer", color: "#0066cc", textAlign: "left", padding: 0, fontWeight: owner ? "bold" : "normal" }}
+                            >
+                                {owner ? owner.fullName : 'Unassigned'}
+                            </button>
                         </div>
 
                         <div style={{ display: "grid", gap: "0.85rem", gridTemplateColumns: "1fr 1fr" }}>
