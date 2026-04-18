@@ -12,6 +12,7 @@ export default function PropertyDetail({ propertyId: propPropertyId }) {
     const { data, currentPage, setCurrentPage } = useContext(AppContext);
 
     const propertyId = Number(propPropertyId ?? currentPage?.params?.propertyId);
+    const clientId = currentPage?.params?.clientId;
     const property = data.properties[propertyId];
 
     const owner = useMemo(() => {
@@ -65,8 +66,8 @@ export default function PropertyDetail({ propertyId: propPropertyId }) {
                         <button onClick={() => setCurrentPage({ name: "editProperty", params: { propertyId } })} style={{ padding: "0.5rem 0.9rem", fontWeight: "bold" }}>
                             Edit
                         </button>
-                        <button onClick={() => setCurrentPage({ name: "properties", params: {} })} style={{ padding: "0.5rem 0.9rem" }}>
-                            Back
+                        <button onClick={() => setCurrentPage(clientId ? { name: "viewClient", params: { clientId } } : { name: "properties", params: {} })} style={{ padding: "0.5rem 0.9rem" }}>
+                            {clientId ? "Back to Client's Details" : "Back to Properties"}
                         </button>
                     </div>
                 </div>
